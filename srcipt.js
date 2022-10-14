@@ -79,7 +79,6 @@ function listRestaurants(results) {
 function automaticDataInput() {
   navigator.geolocation.getCurrentPosition((position) => {
     const { latitude, longitude } = position.coords;
-    console.log(position);
     const lat1 = latitude;
     const long1 = longitude;
 
