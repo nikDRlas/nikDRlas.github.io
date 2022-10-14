@@ -90,7 +90,7 @@ function automaticDataInput() {
 const locateUser = async function (lat1, long1) {
   // Getting restaurants
 
-  const radius = 1000;
+  const radius = 5000;
   const attendees = "";
   const response = await fetch(
     `https://restaurants-api.p.rapidapi.com/restaurants?latitude=${lat1}&longitude=${long1}&radius=${radius}&attendees=${attendees}`,
@@ -122,7 +122,7 @@ const manuallDataInput = async function () {
 
   const longitude = resultsMap[0].geometry.location.lng;
   const latitude = resultsMap[0].geometry.location.lat;
-  const radius = 1000;
+  const radius = 5000;
   const attendees = "";
 
   //Getting restaurants
