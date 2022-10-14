@@ -29,37 +29,8 @@ const options = {
 
 // console.log(streetV);
 
-const getData = async function () {
-  // Getting data from form
-  const addresse = document.querySelector("#addresse").value;
-  // let streetV = addresse.onkeyup.value;
-
-  // Getting Long and Lat
-  const fetchMaps = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${addresse}&key=AIzaSyAgI13DNbLZ9IrzO7iHXO3EwR8qqyKWDGI`
-  );
-
-  const json = await fetchMaps.json();
-  const resultsMap = json.results;
-
-  //   console.log(results[0].geometry.location);
-
-  const longitude = resultsMap[0].geometry.location.lng;
-  const latitude = resultsMap[0].geometry.location.lat;
-  const radius = 1000;
-  const attendees = "";
-  console.log("long", longitude, "lat", latitude);
-  //Getting restaurants
-  const response = await fetch(
-    `https://restaurants-api.p.rapidapi.com/restaurants?latitude=${latitude}&longitude=${longitude}&radius=${radius}&attendees=${attendees}`,
-    options
-  );
-
-  const data = await response.json();
-  const results = data.data.results;
-  console.log(results);
-
-  // Creating restaurants cards
+//List the restaurants
+function listRestaurants(results) {
   const restContainer = document.createElement("div");
   restContainer.classList.add("restContainer");
   const body = document.querySelector("body");
@@ -102,9 +73,81 @@ const getData = async function () {
 
     restContainer.append(rest);
   });
+}
+
+// Get location from device
+function automaticDataInput() {
+  navigator.geolocation.getCurrentPosition((position) => {
+    const { latitude, longitude } = position.coords;
+    console.log(position);
+    const lat1 = latitude;
+    const long1 = longitude;
+
+    locateUser(lat1, long1);
+  });
+}
+
+// Locate User automatic
+const locateUser = async function (lat1, long1) {
+  // Getting restaurants
+
+  const radius = 1000;
+  const attendees = "";
+  const response = await fetch(
+    `https://restaurants-api.p.rapidapi.com/restaurants?latitude=${lat1}&longitude=${long1}&radius=${radius}&attendees=${attendees}`,
+    options
+  );
+
+  const data = await response.json();
+  const results = data.data.results;
+
+  // Creating restaurants cards
+  listRestaurants(results);
 };
 
-document.addEventListener("submit", (e) => {
+//*************************************************************************** */
+//*************************************************************************** */
+//*************************************************************************** */
+//*************************************************************************** */
+// User manually types location
+const manuallDataInput = async function () {
+  const addresse = document.querySelector("#addresse").value;
+
+  // Getting Long and Lat
+  const fetchMaps = await fetch(
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${addresse}&key=AIzaSyAgI13DNbLZ9IrzO7iHXO3EwR8qqyKWDGI`
+  );
+
+  const json = await fetchMaps.json();
+  const resultsMap = json.results;
+
+  const longitude = resultsMap[0].geometry.location.lng;
+  const latitude = resultsMap[0].geometry.location.lat;
+  const radius = 1000;
+  const attendees = "";
+
+  //Getting restaurants
+  const response = await fetch(
+    `https://restaurants-api.p.rapidapi.com/restaurants?latitude=${latitude}&longitude=${longitude}&radius=${radius}&attendees=${attendees}`,
+    options
+  );
+
+  const data = await response.json();
+  const results = data.data.results;
+  console.log(results);
+
+  // Creating restaurants cards
+  listRestaurants(results);
+};
+
+const manuellButton = document.querySelector("#manuellSubmit");
+manuellButton.addEventListener("click", (e) => {
   e.preventDefault();
-  getData();
+  manuallDataInput(); // getData();
+});
+
+const automaticButton = document.querySelector("#automaticSubmit");
+automaticButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  automaticDataInput();
 });
