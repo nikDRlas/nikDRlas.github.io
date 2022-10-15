@@ -48,8 +48,10 @@ function listRestaurants(results) {
 
     restName.textContent = result.name;
     rest.append(restName);
-
-    if (result.opening_hours.open_now) {
+    console.log(result);
+    if (!result.opening_hours) {
+      restOpen.textContent = `No opening information`;
+    } else if (result.opening_hours.open_now) {
       restOpen.textContent = `Restaurant is open!`;
     } else {
       restOpen.textContent = `Restaurant is closed!`;
