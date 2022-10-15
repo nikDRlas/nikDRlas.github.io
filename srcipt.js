@@ -91,7 +91,7 @@ const locateUser = async function (lat1, long1) {
   // Getting restaurants
 
   const radius = 5000;
-  const attendees = "";
+  const attendees = " ";
   const response = await fetch(
     `https://restaurants-api.p.rapidapi.com/restaurants?latitude=${lat1}&longitude=${long1}&radius=${radius}&attendees=${attendees}`,
     options
